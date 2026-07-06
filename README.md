@@ -117,7 +117,7 @@ $$
 Written as a linear system `ε = A q + η` with `q = [u, v, w, δR, α, β, γ]ᵀ`, the least-squares estimate is the Moore–Penrose solution:
 
 $$
-\hat{\mathbf q} = A^{+}\varepsilon, \qquad \hat\sigma^2 = \frac{\lVert \hat{\mathbf r} \rVert_2^2}{N-p}, \qquad \operatorname{Cov}(\hat{\mathbf q}) \approx \hat\sigma^2 (A^{\mathsf T} A)^{-1}
+\hat{\mathbf q} = A^{+}\varepsilon, \qquad \hat\sigma^2 = \frac{\lVert \hat{\mathbf r} \rVert_2^2}{N-p}, \qquad \mathrm{Cov}(\hat{\mathbf q}) \approx \hat\sigma^2 (A^{\mathsf T} A)^{-1}
 $$
 
 `python/spatial_identification/spatial_error_model.py` solves this with column-scaled QR/SVD (never forming `AᵀA` explicitly) and reports the condition number `κ(A)` alongside the fit — a large value flags parameter combinations that are nearly indistinguishable from the residual field alone.
