@@ -120,7 +120,7 @@ $$
 \hat{\mathbf q} = A^{+}\varepsilon, \qquad \hat\sigma^2 = \frac{\lVert \hat{\mathbf r} \rVert_2^2}{N-p}, \qquad \mathrm{Cov}(\hat{\mathbf q}) \approx \hat\sigma^2 (A^{\mathsf T} A)^{-1}
 $$
 
-`python/spatial_identification/spatial_error_model.py` solves this with column-scaled QR/SVD (never forming `AᵀA` explicitly) and reports the condition number `κ(A)` alongside the fit — a large value flags parameter combinations that are nearly indistinguishable from the residual field alone.
+The research version used `python/spatial_identification/spatial_error_model.py` with column-scaled QR/SVD (never forming `AᵀA` explicitly) and reported the condition number `κ(A)` alongside the fit. That Python research module is not included in this public snapshot; the MATLAB correction pipeline below is the executable component.
 
 ### Audit finding — treat α, β as unvalidated
 
@@ -150,7 +150,7 @@ This is the piece that turns an identified error model into an actual **correcte
 
    so a handful of isolated probing anomalies don't drag the whole fit.
 6. **Corrects only the identified systematic component** along the theoretical normals (`P_corrected = P_exp − (A·β)·n`), then **refits** the circle/sphere on the corrected cloud and **rebuilds normals from the corrected geometry** — it does not filter normal components independently, which would break the geometric consistency of the model.
-7. **Reports metrics before/after correction**: mean, RMS, peak-to-valley, standard deviation, a repeatability-based expanded uncertainty (k = 2), form error, and fit RMS residual — plus bidirectional hysteresis RMS/max if a reverse file was supplied.
+7. **Reports metrics before/after correction**: mean, RMS, peak-to-valley, standard deviation, and a within-run `2 × std` dispersion indicator. This is not an uncertainty budget or a repeatability estimate; repeated runs are required for that. Form error, fit RMS residual, and bidirectional hysteresis are also reported when applicable.
 8. **Writes outputs** to `outputDirectory`: corrected point files, `*_metrics.csv`, `*_identified_parameters.csv`, and (if `generateFigures` is true) diagnostic PNGs of normal residuals, form residuals, and — when available — the forward/reverse comparison and hysteresis trace.
 
 ### Using it on your own data
@@ -166,7 +166,7 @@ cfg.huberK          = 1.345;                         % Huber tuning constant
 results = Metrology_Correction(cfg);
 ```
 
-Requirements: **MATLAB R2019b+**, no toolboxes beyond base MATLAB. The theoretical and experimental files must list points in the *same order* — this is exactly the ordering guaranteed by the Python point-generation scripts and the ZEISS six-column export, so a file produced by `generate_planar_points.py` or `generate_spherical_points.py` and its corresponding CALYPSO deviation export are already compatible without reformatting.
+Requirements: **MATLAB R2019b+**, no toolboxes beyond base MATLAB. The theoretical and experimental files must list points in the *same order*. The Python point-generation scripts referenced in the report are not included in this public snapshot, so provide those files from your controlled research archive before running a campaign.
 
 **What this pipeline deliberately does *not* do:** it does not replace a moving-average smoothing pass with a "correction," it does not treat the 4-parameter fit as a volumetric compensation map, and it does not report a filtered circularity/sphericity value as the conformity result — see [Metrological scope](#metrological-scope) below.
 
@@ -176,18 +176,12 @@ Requirements: **MATLAB R2019b+**, no toolboxes beyond base MATLAB. The theoretic
 .
 ├── docs/
 │   └── Spatial_Verification_of_a_CMM_Report.pdf     # full write-up (Research Edition)
-├── python/
-│   ├── point_generation/
-│   │   ├── generate_planar_points.py                # circle + normals, 6 arm lengths, CW/CCW
-│   │   └── generate_spherical_points.py              # 10-ring spherical segment, ±45°
-│   └── spatial_identification/
-│       ├── spatial_error_model.py                    # joint 7-parameter SVD fit (see audit note above)
-│       └── smoothing_filter.py                       # diagnostic-only smoothing (Hampel + Savitzky-Golay)
 ├── matlab/
 │   └── Metrology_Correction.m                        # robust correction + validation pipeline
-├── data/
-│   ├── planar_cw_60pts/                              # clockwise reference path, 6 arm lengths
-│   └── planar_ccw_60pts/                             # counter-clockwise reference path, 6 arm lengths
+├── assets/
+│   ├── mcg_artefact_photo.png
+│   └── figures/                                      # figures reproduced from the report
+└── README.md
 └── assets/
     ├── mcg_artefact_photo.png
     └── figures/                                      # figures reproduced from the report (photos, sketches, plots)
@@ -242,21 +236,10 @@ Figure 4.1(b) and the ±45° coverage diagram (Fig. 6.1) are omitted here as nea
 ## Running the scripts
 
 ```bash
-# Generate the six-arm-length planar and spherical trajectories
-python python/point_generation/generate_planar_points.py
-python python/point_generation/generate_spherical_points.py
-
-# Fit the spatial error model to a CMM deviation file
-# (expects whitespace-separated columns: x y z nx ny nz eps)
-python -c "
-from python.spatial_identification.spatial_error_model import load_deviation_file, fit
-xyz, normals, eps = load_deviation_file('your_deviation_file.txt')
-result = fit(xyz, normals, eps, model='full')
-print(result['x_hat'], result['condition_number'])
-"
-
-# Run the built-in synthetic validation (confirms the alpha/beta fix)
-python python/spatial_identification/spatial_error_model.py
+# The Python trajectory-generation and spatial-identification scripts used in
+# the research archive are not included in this public snapshot. Obtain them
+# from that controlled archive before generating trajectories or fitting the
+# seven-parameter spatial model.
 ```
 
 ```matlab
@@ -270,9 +253,9 @@ results = Metrology_Correction(cfg);
 
 ## For another metrologist reusing this repository
 
-1. **Generate (or reuse) a nominal trajectory** with `python/point_generation/` for your MCG arm length, point density, and elevation band. Verify the chord-length criterion above against your own MCG fork clearance (`d_max`).
+1. **Generate (or reuse) a nominal trajectory** from your controlled research archive (the generator is not included in this public snapshot) for your MCG arm length, point density, and elevation band. Verify the chord-length criterion above against your own MCG fork clearance (`d_max`).
 2. **Export and run** the six-column file as a CALYPSO nominal-point program; execute at least one unidirectional run and, if you want a hysteresis estimate, one reversal run over the *same point order*.
-3. **Feed both files into `Metrology_Correction.m`.** Read `*_metrics.csv` for the before/after form error and RMS, and `*_identified_parameters.csv` for the fitted `[dX dY dZ dR]`. Treat these four channels as usable; do **not** extend the pipeline's simple 4-parameter fit to squareness angles without switching to the joint 7-parameter Python model and rechecking `κ(A)`.
+3. **Feed both files into `Metrology_Correction.m`.** Read `*_metrics.csv` for the before/after form error and RMS, and `*_identified_parameters.csv` for the fitted `[dX dY dZ dR]`. Treat these four channels as usable; do **not** extend the pipeline's simple 4-parameter fit to squareness angles without restoring the joint 7-parameter research model and rechecking `κ(A)`.
 4. **Keep raw and corrected data separate.** The diagnostic filters (`smoothing_filter.py`, the Hampel + Savitzky-Golay stage described in the report) are for visualizing lobing/noise structure only — never substitute a filtered peak-to-valley value for the raw circularity/sphericity result in a conformity decision.
 5. **Repeat before trending.** A single run per path family (as in the original campaign) cannot separate hysteresis from thermal drift, re-approach effects, or probing repeatability — the report's proposed protocol (chapter 6) calls for ≥5 repeats per direction, thermal logging, and an ABBA reversal schedule before any result is used as a control-limit input.
 
