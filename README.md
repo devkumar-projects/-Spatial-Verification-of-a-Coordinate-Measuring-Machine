@@ -233,6 +233,10 @@ Every point-set file is six whitespace-separated columns `x y z nx ny nz` (mm / 
 
 Figure 4.1(b) and the ±45° coverage diagram (Fig. 6.1) are omitted here as near-duplicates / vector-only content — both are in the full PDF.
 
+## Interactive notebook on Kaggle
+
+- [Robust CMM Error Estimation on Synthetic Data](https://www.kaggle.com/code/devkumarkaggle/robust-cmm-error-estimation-on-synthetic-data) — an independent, CPU-only illustration of the four-parameter normal-deviation model and robust fitting, using synthetic observations. It is not the full MATLAB correction pipeline or a physical CMM evaluation.
+
 ## Running the scripts
 
 ```bash
