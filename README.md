@@ -14,7 +14,7 @@
   <a href="#"><img src="https://img.shields.io/badge/ZEISS%20CALYPSO-CMM%20execution-00539b" /></a>
   <a href="#"><img src="https://img.shields.io/badge/SVD%20%2F%20IRLS-Robust%20least--squares-013243" /></a>
   <a href="#"><img src="https://img.shields.io/badge/ISO%2010360%20%2F%20GUM-Metrology%20framework-6e40c9" /></a>
-  <a href="#"><img src="https://img.shields.io/badge/License-MIT-lightgrey" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/License-Clarification%20pending-lightgrey" /></a>
 </p>
 
 <p align="center">
@@ -124,9 +124,9 @@ The research version used `python/spatial_identification/spatial_error_model.py`
 
 ### Audit finding — treat α, β as unvalidated
 
-The original project solved the three squareness angles as **three separate, sequential single-parameter systems** instead of the joint 7-parameter model above. Validating that approach against a known synthetic parameter vector reproduced translation, radius, and `γ` almost exactly, but returned `α` and `β` roughly **99× and 9.9× too large**. This is too large to be floating-point rounding and points to a unit conversion, sign-convention mismatch, or parameter coupling in the original three-system approach — the joint SVD solution in this repository resolves it, and its own synthetic self-test (`_demo()` in `spatial_error_model.py`) recovers all seven parameters to machine precision.
+The original project solved the three squareness angles as **three separate, sequential single-parameter systems** instead of the joint 7-parameter model above. Validating that approach against a known synthetic parameter vector reproduced translation, radius, and `γ` almost exactly, but returned `α` and `β` roughly **99× and 9.9× too large**. This is too large to be floating-point rounding and points to a unit conversion, sign-convention mismatch, or parameter coupling in the original three-system approach — a joint, column-scaled QR/SVD fit is the proposed remedy. The corresponding Python research module and its self-test are **not included in this public snapshot**, so their recovery result cannot be reproduced from this repository as it stands. The executable public correction component below fits four parameters; it does not implement or validate the seven-parameter angular model.
 
-**Practical rule:** don't upload `α`/`β` from the original per-axis fits as compensation values. Refit jointly, check `κ(A)`, and re-run the synthetic self-test before trusting any angular channel.
+**Practical rule:** don't upload `α`/`β` from the original per-axis fits as compensation values. Restore and review the joint implementation, verify units and axis conventions, check `κ(A)`, and run an independent synthetic parameter-recovery test before trusting any angular channel.
 
 ## MATLAB correction & validation pipeline (`matlab/Metrology_Correction.m`)
 
@@ -269,7 +269,7 @@ This is a diagnostic and verification study, not a complete ISO 10360 acceptance
 
 ## License
 
-This project is released under the [MIT License](LICENSE).
+The original README identifies an intended MIT licence, but the audited public snapshot does not include the linked `LICENSE` file. The attribution remains **Dev Kumar and Thien Ho**. A standalone licence notice and the scope of redistribution rights need to be clarified with the authors before this repository is used for a source-code deposit or redistributed. No new licence is granted by this documentation update.
 
 ## Contact
 
