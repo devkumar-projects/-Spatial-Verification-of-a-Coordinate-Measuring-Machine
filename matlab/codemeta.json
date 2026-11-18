@@ -1,0 +1,26 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "CMM Normal-Deviation Correction: Four-Parameter Robust MATLAB Pipeline",
+  "description": "MATLAB research software for four-parameter normal-deviation fitting, Huber IRLS correction and before/after diagnostic metrics for circular or spherical CMM point sets. It does not implement the missing seven-parameter angular research module, a complete volumetric compensation map or an ISO acceptance test.",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Dev",
+      "familyName": "Kumar",
+      "@id": "https://orcid.org/0009-0008-2279-9163"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Thien",
+      "familyName": "Ho"
+    }
+  ],
+  "codeRepository": "https://github.com/devkumar-projects/-Spatial-Verification-of-a-Coordinate-Measuring-Machine/tree/main/matlab",
+  "url": "https://github.com/devkumar-projects/-Spatial-Verification-of-a-Coordinate-Measuring-Machine/tree/main/matlab",
+  "license": "https://spdx.org/licenses/MIT",
+  "programmingLanguage": [
+    "MATLAB"
+  ],
+  "isPartOf": "https://github.com/devkumar-projects/-Spatial-Verification-of-a-Coordinate-Measuring-Machine"
+}

@@ -14,7 +14,7 @@
   <a href="#"><img src="https://img.shields.io/badge/ZEISS%20CALYPSO-CMM%20execution-00539b" /></a>
   <a href="#"><img src="https://img.shields.io/badge/SVD%20%2F%20IRLS-Robust%20least--squares-013243" /></a>
   <a href="#"><img src="https://img.shields.io/badge/ISO%2010360%20%2F%20GUM-Metrology%20framework-6e40c9" /></a>
-  <a href="#"><img src="https://img.shields.io/badge/License-Clarification%20pending-lightgrey" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/License-MIT-lightgrey" /></a>
 </p>
 
 <p align="center">
@@ -269,7 +269,7 @@ This is a diagnostic and verification study, not a complete ISO 10360 acceptance
 
 ## License
 
-The original README identifies an intended MIT licence, but the audited public snapshot does not include the linked `LICENSE` file. The attribution remains **Dev Kumar and Thien Ho**. A standalone licence notice and the scope of redistribution rights need to be clarified with the authors before this repository is used for a source-code deposit or redistributed. No new licence is granted by this documentation update.
+The repository-authored MATLAB software and documentation are distributed under the [MIT License](LICENSE), attributed to **Dev Kumar and Thien Ho**. The standalone notice records the MIT licence originally announced for this project. See [NOTICE.md](NOTICE.md) for third-party exclusions. The separately cited MATLAB source component excludes the report, manufacturer material and the unavailable seven-parameter Python research module.
 
 ## Contact
 
