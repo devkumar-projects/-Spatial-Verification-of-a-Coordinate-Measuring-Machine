@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <a href="docs/Spatial_Verification_of_a_CMM_Report.pdf"><img src="https://img.shields.io/badge/📄%20Full%20Report-Spatial%20Verification%20of%20a%20CMM%20(Research%20Edition)-c0392b?style=for-the-badge" /></a>
+  <a href="https://dev-kumar.com/reports/spatial-verification-cmm.pdf"><img src="https://img.shields.io/badge/📄%20Full%20Report-Spatial%20Verification%20of%20a%20CMM%20(Research%20Edition)-c0392b?style=for-the-badge" /></a>
 </p>
 
 ## Overview
@@ -32,7 +32,7 @@ This project develops a metrologically rigorous workflow for periodic verificati
 5. **A MATLAB correction and validation pipeline** — robust (Huber-weighted) parameter estimation, systematic-error correction along the probing normals, and before/after form-error metrics, with an explicit forward/reverse split for hysteresis diagnostics.
 6. **A revised verification protocol**: equal-area spherical sampling, unidirectional reference paths, paired reversal tests, and an explicit uncertainty budget aligned with **ISO 10360** and the **GUM** framework.
 
-The full write-up — including the complete metrological framework, uncertainty budget, and the four-phase verification protocol — is in [`docs/Spatial_Verification_of_a_CMM_Report.pdf`](docs/Spatial_Verification_of_a_CMM_Report.pdf) (Research Edition). This README summarizes the method, reproduces every governing equation directly (no report screenshots), and documents how the code is meant to be reused.
+The full write-up — including the complete metrological framework, uncertainty budget, and the four-phase verification protocol — is in [the full research report](https://dev-kumar.com/reports/spatial-verification-cmm.pdf) (Research Edition). This README summarizes the method, reproduces every governing equation directly (no report screenshots), and documents how the code is meant to be reused.
 
 > **Team project**: Dev Kumar, Thien Ho, supervised by Thierry Coorevits (ENSAM Lille, Semester 8).
 
@@ -174,8 +174,6 @@ Requirements: **MATLAB R2019b+**, no toolboxes beyond base MATLAB. The theoretic
 
 ```
 .
-├── docs/
-│   └── Spatial_Verification_of_a_CMM_Report.pdf     # full write-up (Research Edition)
 ├── matlab/
 │   └── Metrology_Correction.m                        # robust correction + validation pipeline
 ├── assets/
@@ -274,3 +272,5 @@ The repository-authored MATLAB software and documentation are distributed under 
 ## Contact
 
 Dev Kumar &middot; [dev-kumar.com](https://dev-kumar.com) &middot; contact@dev-kumar.com
+
+The linked manuscript is hosted on the portfolio. Its authors and distribution terms are stated in the PDF; the software licence does not relicense the manuscript.
